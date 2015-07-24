@@ -1,0 +1,61 @@
+Başında # işareti olanlar root olarak yapılmalı
+Başında $ işareti olanlar kulanıcı olarak yapılmalı
+Başında -- işareti olanlar sadece yorum.
+Başında hiçbir şey olmayanlar text editörü ile değiştirilmeli
+
+-- İşletim sistemini hazırlar.
+
+#yum groupinstall "Development tools"
+#yum install zlib-devel bzip2-devel openssl-devel ncurses-devel sqlite-devel readline-devel tk-devel gdbm-devel db4-devel libpcap-devel xz-devel
+
+#yum install pandoc
+
+-- Yukarısı işletim sistemini hazırlamak için zaten yapıldı.
+
+#yum install numpy scipy python-matplotlib python-pandas sympy python-nose libpng-devel
+
+-- Python indikten sonra tarı açıyoruz
+
+#./configure --prefix=/usr/local --enable-shared LDFLAGS="-Wl,-rpath /usr/local/lib"
+#make && make altinstall
+
+#pip3.4 install matplotlib
+
+-- Spark tarı açıyoruz
+
+#cd /home/genel/
+
+#vi .bashrc
+export SPARK_HOME=/BigData/program/spark-1.4.1-bin-hadoop2.6
+export PYTHONPATH=$SPARK_HOME/python/:$PYTHONPATH
+export PYTHONPATH=$SPARK_HOME/python/lib/py4j-0.8.2.1-src.zip:$PYTHONPATH
+export PYSPARK_PYTHON=python3.4
+export PYSPARK_DRIVER_PYTHON=ipython3
+export PATH=$SPARK_HOME/sbin:$PATH
+
+$ssh-keygen -t rsa -P '' -f ~/.ssh/id_rsa
+$cat ~/.ssh/id_rsa.pub >> ~/.ssh/authorized_keys
+
+#mkdir /etc/ssh/genel
+#cp /home/genel/.ssh/authorized_keys /etc/ssh/genel/
+#chown -R genel:genel /etc/ssh/genel
+#chmod 755 /etc/ssh/genel
+#chmod 644 /etc/ssh/genel/authorized_keys
+#vi /etc/ssh/sshd_config 
+
+AuthorizedKeysFile      /etc/ssh/genel/authorized_keys
+
+-- restart yapıyoruz
+
+#pip3.4 install ipython[all]
+
+#iptest
+
+$cd /BigData/runtime
+
+$start-all.sh 
+$ipython notebook
+
+
+http://localhost:4040 Spark
+http://localhost:8888 Notebook
